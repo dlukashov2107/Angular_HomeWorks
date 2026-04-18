@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { DatePipe } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   private router = inject(Router);
+  private ngZone = inject(NgZone);
+  private cdr=inject(ChangeDetectorRef);
   public userService = inject(UserService);
   menuItems = [
     {
@@ -30,9 +32,10 @@ export class HeaderComponent {
 
   date = new Date();
   ngOnInit(): void {
-    setInterval(() => {
+    this.ngZone.runOutsideAngular(()=> {return setInterval(() => {
       this.date = new Date();
-    }, 1000);
+      this.cdr.detectChanges();
+    }, 1000)});
   }
   //constructor(public userService: UserService) {}
   constructor() {}

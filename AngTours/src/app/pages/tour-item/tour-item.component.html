@@ -1,16 +1,17 @@
-<div class="tour-item-wrapper">
-  <mat-card class="tour-item-card" appearance="outlined">
+<div class="card-wrapper">
+  <mat-card class="tour-card" appearance="outlined">
     <mat-card-header>
       <mat-card-title>{{ tour?.name }}</mat-card-title>
       <mat-card-subtitle>{{ tour?.tourOperator }}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content> </mat-card-content>
+    <mat-card-content>
+      <p>
+        {{ tour?.description }}
+      </p>
+    </mat-card-content>
     <img mat-card-image src="/img/{{ tour?.img }}" alt="Photo of a tour" />
-    <p>
-      {{ tour?.description }}
-    </p>
-    <mat-card-actions>
-      <button (click)="onOrder()" matButton>Оформить заказ</button>
-    </mat-card-actions>
+    <!-- <mat-card-actions>
+      <button matButton>Подробнее...</button>
+    </mat-card-actions> -->
   </mat-card>
 </div>

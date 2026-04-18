@@ -23,6 +23,7 @@ export class TourItemComponent implements OnInit {
     const heroId = this.route.snapshot.paramMap.get('id');
     this.tourService.getTourById(heroId).subscribe(
       (data) => {
+        //console.log('tour, id', data, heroId);
         this.tour = data;
         console.log('Tour: ', this.tour);
       },
