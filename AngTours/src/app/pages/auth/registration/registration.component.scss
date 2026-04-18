@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.registration-wrap {
+  & div {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  & .input-error {
+    border: 1px solid red;
+  }
+}

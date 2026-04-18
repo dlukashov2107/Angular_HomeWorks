@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.order-wrap-info {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  border: 1px solid rgb(127, 127, 127);
+}
+
+.order-wrap {
+  & div {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  & .input-error {
+    border: 1px solid red;
+  }
+}

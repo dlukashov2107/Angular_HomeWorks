@@ -1,0 +1,40 @@
+<div class="tours-wrap">
+  <ngx-masonry>
+    @for (item of tours; track item.id) {
+      <div ngxMasonryItem class="tour-item-masonry">
+        <mat-card class="tour-item" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="/img/{{ item.img }}" alt="Photo of a tour" />
+          <mat-card-content>
+            <p>
+              {{ item.description }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button (click)="goToTour(item)" matButton>Подробнее...</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    }
+  </ngx-masonry>
+  <!-- @for (item of tours; track item.id) {
+    <mat-card class="tour-item" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="/img/{{ item.img }}" alt="Photo of a tour" />
+      <mat-card-content>
+        <p>
+          {{ item.description }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button matButton>Подробнее...</button>
+      </mat-card-actions>
+    </mat-card>
+  } -->
+</div>

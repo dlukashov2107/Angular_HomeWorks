@@ -1,0 +1,36 @@
+mat-card {
+  & .mat-mdc-card {
+    font-size: 0.9rem;
+  }
+  & .mat-mdc-card-header {
+    padding: 4px;
+    height: auto;
+    overflow: hidden;
+    font-size: 0.9rem;
+  }
+
+  & .mat-mdc-card-header-text {
+    font-size: 0.7rem;
+    letter-spacing: normal;
+  }
+
+  & .mat-mdc-card-title {
+    font-size: 0.7rem;
+    font-weight: bold;
+  }
+
+  & .mat-mdc-card-subtitle {
+    font-size: 0.6rem;
+  }
+
+  & .mat-mdc-card-content {
+    overflow: auto;
+    font-size: 0.7rem;
+  }
+
+  & .mat-mdc-card-actions button {
+    font-size: 0.6rem;
+    color: var(--header-background);
+    font-weight: bold;
+  }
+}

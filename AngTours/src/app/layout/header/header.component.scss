@@ -1,0 +1,29 @@
+@use "variables";
+
+:host {
+  height: 60px;
+  width: 100%;
+  display: inline-block;
+}
+
+.layout-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  background: var(--header-background);
+  color: #fff;
+  height: 100%;
+  padding: 4px 6px;
+}
+.layout-header .exit-button {
+  color: #fff;
+  height: 30px;
+  background-color: rgb(76, 93, 187);
+}
+
+.layout-header div {
+  display: flex;
+  justify-content: space-around;
+  justify-content: space-between;
+  gap: 15px;
+}

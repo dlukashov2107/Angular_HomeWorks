@@ -1,0 +1,10 @@
+@use "variables";
+
+:host{
+    min-width: 300px;
+    flex-basis: 300px;
+}
+
+.aside{
+    border-left: 1px solid var(--border-color);
+}

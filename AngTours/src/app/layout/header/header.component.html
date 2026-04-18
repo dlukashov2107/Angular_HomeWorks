@@ -1,0 +1,22 @@
+<div class="layout-header">
+  <app-menu [items]="menuItems"></app-menu>
+  <div>
+    @if (userService.getUser()) {
+      <div class="user-info-wrap">Ваш логин: {{ userService.getUser() }}</div>
+    } @else {
+      <div class="user-info-wrap">Вы не вошли в систему</div>
+    }
+    <div class="time-wrap">
+      {{ date | date: "HH:mm:ss EEEE" }}
+    </div>
+
+    <button
+      class="exit-button"
+      mat-flat-button
+      (click)="onExit($event)"
+      [disabled]="!userService.getUser()"
+    >
+      Выйти
+    </button>
+  </div>
+</div>
