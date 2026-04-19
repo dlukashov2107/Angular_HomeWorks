@@ -1,36 +1,49 @@
+<div class="input-search-wrap">
+  <mat-form-field>
+    <input (input)="searchTours($event)" matInput placeholder="поиск" />
+  </mat-form-field>
+</div>
 <div
   class="tours-wrap"
   appHighlightActive
+  #highLightDirective
   [sort]="sort"
   [initFirst]="true"
   selector=".tour-item"
   (onEnter)="onEnter($event)"
-  *ngIf="tours?.length"
 >
-  <ngx-masonry>
-    @for (item of tours; track item.id; let i = $index) {
-      <div
-        ngxMasonryItem
-        class="tour-item"
-        [attr.data-tour-id]="item.id"
-        [attr.index]="i"
-      >
-        <mat-card class="example-card" appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
-          </mat-card-header>
-          <img mat-card-image src="/img/{{ item.img }}" alt="Photo of a tour" />
-          <mat-card-content>
-            <p>
-              {{ item.description }}
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button (click)="goToTour(item)" matButton>Подробнее...</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+  <ngx-masonry [options]="masonryOptions" (layoutComplete)="updateView()">
+    @if (tours?.length > 0) {
+      @for (item of tours; track item.id; let i = $index) {
+        <div
+          ngxMasonryItem
+          class="tour-item"
+          [attr.data-tour-id]="item.id"
+          [attr.index]="i"
+        >
+          <mat-card class="example-card" appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>{{ item.name }}</mat-card-title>
+              <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
+            </mat-card-header>
+            <img
+              mat-card-image
+              src="/img/{{ item.img }}"
+              alt="Photo of a tour"
+            />
+            <mat-card-content>
+              <p>
+                {{ item.description }}
+              </p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button (click)="goToTour(item)" matButton>Подробнее...</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      }
+    } @else {
+      <p>Не найдено результатов</p>
     }
   </ngx-masonry>
 </div>
