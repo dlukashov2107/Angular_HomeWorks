@@ -1,17 +1,29 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { ToursService } from '../../services/tours.service';
 import { ITour } from '../../models/interfaces';
 import { MatCardModule } from '@angular/material/card';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { Router } from '@angular/router';
-import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive'
+import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tours',
-  imports: [MatCardModule, NgxMasonryModule, HighlightActiveDirective],
+  imports: [
+    MatCardModule,
+    NgxMasonryModule,
+    HighlightActiveDirective,
+    CommonModule,
+  ],
   templateUrl: './tours.component.html',
   styleUrl: './tours.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToursComponent implements OnInit {
   private tourService = inject(ToursService);
@@ -38,27 +50,23 @@ export class ToursComponent implements OnInit {
   }
 
   sort(item1: HTMLElement, item2: HTMLElement): number {
-    if(parseFloat(item1.style.top) == parseFloat(item2.style.top))
-    {
-      return parseFloat(item1.style.left) < parseFloat(item2.style.left) ? -1 : 1;
+    if (parseFloat(item1.style.top) == parseFloat(item2.style.top)) {
+      return parseFloat(item1.style.left) < parseFloat(item2.style.left)
+        ? -1
+        : 1;
+    } else {
+      return parseFloat(item1.style.top) - parseFloat(item2.style.top);
     }
-    else 
-      {
-        return parseFloat(item1.style.top) - parseFloat(item2.style.top)
-      }
   }
 
-  onEnter(ev: {el: HTMLElement, index: number}){
+  onEnter(ev: { el: HTMLElement; index: number }) {
     const tourId = ev.el.getAttribute('data-tour-id');
     const num = tourId;
-    if(tourId)
-    {
+    if (tourId) {
       //this.goToTour(this.tours.find(item => item.id === num as unknown as number));
-      this.goToTour({id: tourId} as unknown as ITour);
-    }
-    else
-    {
-      console.log("id не найден");
+      this.goToTour({ id: tourId } as unknown as ITour);
+    } else {
+      console.log('id не найден');
     }
   }
 }

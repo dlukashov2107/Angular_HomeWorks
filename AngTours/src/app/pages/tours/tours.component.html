@@ -1,12 +1,20 @@
-<div class="tours-wrap"
-appHighlightActive
-[sort] = "sort"
-[initFirst] = "true"
-selector='.tour-item'
-(onEnter)="onEnter($event)">
+<div
+  class="tours-wrap"
+  appHighlightActive
+  [sort]="sort"
+  [initFirst]="true"
+  selector=".tour-item"
+  (onEnter)="onEnter($event)"
+  *ngIf="tours?.length"
+>
   <ngx-masonry>
     @for (item of tours; track item.id; let i = $index) {
-      <div ngxMasonryItem class="tour-item"[attr.data-tour-id]="item.id" [attr.index]="i">
+      <div
+        ngxMasonryItem
+        class="tour-item"
+        [attr.data-tour-id]="item.id"
+        [attr.index]="i"
+      >
         <mat-card class="example-card" appearance="outlined">
           <mat-card-header>
             <mat-card-title>{{ item.name }}</mat-card-title>
