@@ -1,6 +1,6 @@
 <div class="input-search-wrap">
-  <mat-form-field>
-    <input (input)="searchTours($event)" matInput placeholder="поиск" />
+  <mat-form-field class="input-search-form">
+    <input #inputSearch matInput placeholder="поиск" />
   </mat-form-field>
 </div>
 <div
@@ -15,6 +15,7 @@
   <ngx-masonry [options]="masonryOptions" (layoutComplete)="updateView()">
     @if (tours?.length > 0) {
       @for (item of tours; track item.id; let i = $index) {
+        <!-- @for (item of (tours$ | async).tours; track item.id; let i = $index) { -->
         <div
           ngxMasonryItem
           class="tour-item"
@@ -43,7 +44,7 @@
         </div>
       }
     } @else {
-      <p>Не найдено результатов</p>
+      <p>По заданному критерию туры не найдены</p>
     }
   </ngx-masonry>
 </div>

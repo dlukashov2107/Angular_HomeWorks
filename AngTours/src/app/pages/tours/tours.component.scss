@@ -1,4 +1,10 @@
 .tours-wrap {
+  overflow-y: auto;
+  width: 100%;
+  // @media screen {    
+  // };
+  height: 600px;
+
   & .tour-item {
     width: 300px;
     margin: 10px;
@@ -16,5 +22,12 @@
     & img {
       width: 100%;
     }
+  }
+}
+.input-search-wrap{
+display: flex;
+justify-content: center;
+  & .input-search-form{
+    width: 50%;
   }
 }

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { API } from '../../shared/api';
 import {
   IAuthorizationUser,
@@ -8,6 +7,8 @@ import {
   IAuthUserResponse,
   IRegUserResponse,
 } from '../../models/interfaces';
+import { delay, finalize, Observable } from 'rxjs';
+import { LoaderService } from './loader-api.service';
 
 @Injectable({
   providedIn: 'root', //Здесь мы указываем, что UserApiService - это singletone
@@ -15,17 +16,27 @@ import {
 export class UserApiService {
   private api = API;
   private http = inject(HttpClient);
+  private loaderServise = inject(LoaderService);
 
   constructor() {}
 
+
   auth(body: IAuthorizationUser): Observable<IAuthUserResponse> {
-    return this.http.post<IAuthUserResponse>(this.api.auth, body);
+    this.loaderServise.setLoader(true);
+    return this.http.post<IAuthUserResponse>(this.api.auth, body).pipe(
+      delay(1000),
+      finalize(() => {
+        this.loaderServise.setLoader(false);
+      }),
+    );
   }
   reg(body: IRegistrationUser): Observable<IRegUserResponse> {
-    return this.http.post<IRegUserResponse>(this.api.register, body);
+    this.loaderServise.setLoader(true);
+    return this.http.post<IRegUserResponse>(this.api.register, body).pipe(
+      delay(1000),
+      finalize(() => {
+        this.loaderServise.setLoader(false);
+      }),
+    );
   }
 }
-
-// reg(body: IRegistrationUser): Observable<string> {
-//   return this.http.post(this.api.register, body, {responseType: 'text'});
-// }

@@ -28,3 +28,10 @@ export interface IToursResponse {
   tours: Array<ITour>;
 }
 export interface ITourResponse extends ITour {}
+
+export interface IFilterTypeLogic {
+  key: ITourTypes,
+  label?: string
+}
+
+export type ITourTypes = 'all' | 'single' | 'group';

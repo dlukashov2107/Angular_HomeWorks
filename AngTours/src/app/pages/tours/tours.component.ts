@@ -3,12 +3,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
   inject,
 } from '@angular/core';
 import { ToursService } from '../../services/tours.service';
-import { ITour } from '../../models/interfaces';
+import { ITour, ITourTypes } from '../../models/interfaces';
 import { MatCardModule } from '@angular/material/card';
 import {
   NgxMasonryComponent,
@@ -20,6 +22,7 @@ import { HighlightActiveDirective } from '../../shared/directives/highlight-acti
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { Subject, Subscription, debounceTime, fromEvent, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tours',
@@ -35,10 +38,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrl: './tours.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToursComponent implements OnInit, AfterViewInit {
+export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('highLightDirective', { read: HighlightActiveDirective })
   highLightDirective: HighlightActiveDirective;
   @ViewChild(NgxMasonryComponent) masonry: NgxMasonryComponent;
+  @ViewChild('inputSearch') inputSearch: ElementRef;
 
   private tourService = inject(ToursService);
   private router = inject(Router);
@@ -48,19 +52,54 @@ export class ToursComponent implements OnInit, AfterViewInit {
   toursCopy: Array<ITour>;
   masonryOptions: NgxMasonryOptions = { animations: {} };
 
+  typeTourFilter: ITourTypes = null;
+  dateTourFilter: string = null;
+  inputSearchTourFilter: string = null;
+  // dateTourFilter
+  tours$ = this.tourService.getTours();
+  typeUnsubscriber: Subscription;
+  dateUnsubscriber: Subscription;
+ // private _unsubscriber = new Subject<boolean>();
+
+
   ngOnInit(): void {
-    this.tourService.getTours().subscribe((data) => {
-      //  console.log('data tours all', data.tours);
+    this.tourService.getTours().subscribe((data: any) => {
       this.tours = data.tours;
       this.toursCopy = [...this.tours];
       this.cdr.detectChanges();
-      console.log('this.tours all', this.tours);
+      //console.log('this.tours all', this.tours);     
+    })
+
+    
+     this.typeUnsubscriber = this.tourService.tourType$.subscribe((type)=>{
+      //this.tourService.tourType$.pipe(takeUntil(this._unsubscriber)).subscribe((type)=>{
+       // console.log("type", type);
+      this.typeTourFilter = type;
+      this.initTourFilterLogic();
     });
+   this.dateUnsubscriber = this.tourService.tourDate$.subscribe((date)=>{
+      this.dateTourFilter = date as string;
+      this.initTourFilterLogic();
+   });
   }
-  ngAfterViewInit() {}
+
+  ngAfterViewInit() {
+    fromEvent<InputEvent>(this.inputSearch.nativeElement, 'input').pipe(
+      debounceTime(300)
+    ).subscribe((value)=>{this.searchTours(value)})
+  }
+
+  ngOnDestroy(): void {
+    if(this.typeUnsubscriber)
+      this.typeUnsubscriber.unsubscribe();
+    if(this.dateUnsubscriber)
+      this.dateUnsubscriber.unsubscribe();
+    // this._unsubscriber.next(true);
+    // this._unsubscriber.complete();
+  }
 
   goToTour(tour: ITour): void {
-    if (tour.id) {
+    if (tour?.id) {
       this.router.navigate([`tour/${tour.id}`]);
     } else {
       console.error('id не найден');
@@ -88,29 +127,72 @@ export class ToursComponent implements OnInit, AfterViewInit {
     }
   }
 
-  searchTours(ev: Event): void {
+  searchTours(ev: InputEvent): void {
     console.log('searching');
 
     const searchValue = (ev.target as HTMLInputElement).value;
-    const regExp = new RegExp(searchValue, 'i');
+    this.inputSearchTourFilter = searchValue;
+    // const regExp = new RegExp(searchValue, 'i');
 
-    if (!searchValue) {
-      this.tours = [...this.toursCopy];
-    } else {
-      this.tours = this.toursCopy.filter((el) => {
-        return regExp.test(el.name);
-      });
-    }
-    setTimeout(() => {
-      //this.showMasonry = true;
-      this.masonry.reloadItems();
-      this.masonry.layout();
-    });
+    // if (!searchValue) {
+    //   this.tours = [...this.toursCopy];
+    // } else {
+    //   this.tours = this.toursCopy.filter((el) => {
+    //     return regExp.test(el.name);
+    //   });
+    // }
+    // setTimeout(() => {
+    //   //this.showMasonry = true;
+    //   this.masonry.reloadItems();
+    //   this.masonry.layout();
+    // });
+    this.initTourFilterLogic();
   }
 
   updateView(): void {
     setTimeout(() => {
       this.highLightDirective.initItems();
+    });
+  }
+
+  initTourFilterLogic():void{
+    //logic for type
+    let filteredArr = [...this.toursCopy];
+    if(this.typeTourFilter){
+      switch (this.typeTourFilter){
+        case 'group':
+          filteredArr = this.toursCopy.filter((el)=> el.type === 'multi');
+          break;
+          case 'single':
+            filteredArr = this.toursCopy.filter((el)=> el.type === 'single');
+            break;
+            case 'all':
+              filteredArr = [...this.toursCopy];
+          break;  
+      }
+    }
+
+    //logic for Date
+    if(this.dateTourFilter){
+      filteredArr = filteredArr.filter((el)=> el.date === this.dateTourFilter);
+      }  
+
+    //logic for Input
+   
+    if(this.inputSearchTourFilter){
+      console.log("this.inputSearchTourFilter", this.inputSearchTourFilter);
+      const regExp = new RegExp(this.inputSearchTourFilter, 'i');
+      filteredArr = filteredArr.filter((el) => {
+        return regExp.test(el.name);
+      });
+    }
+
+       this.tours = filteredArr;
+
+
+    setTimeout(()=>{
+      this.masonry.reloadItems();
+      this.masonry.layout();
     });
   }
 }
