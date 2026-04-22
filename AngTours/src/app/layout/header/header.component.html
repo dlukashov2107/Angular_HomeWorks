@@ -1,6 +1,12 @@
 <div class="layout-header">
   <app-menu [items]="menuItems"></app-menu>
   <div>
+    <div class="img-basket">
+      <img src="/img/basket.png" alt="Photo of a basket" />
+      <p class="toursInBasketCounter">
+        {{ userService.getToursCountInBasket() }}
+      </p>
+    </div>
     @if (userService.getUser()) {
       <div class="user-info-wrap">Ваш логин: {{ userService.getUser() }}</div>
     } @else {

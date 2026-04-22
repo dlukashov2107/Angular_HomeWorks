@@ -8,6 +8,13 @@
       <p>
         {{ tour?.description }}
       </p>
+      <p>
+        {{ tour?.date | date: "dd-MM-YY" }}
+      </p>
+      <!-- <div class="country-info">
+        Страна: {{tour?.country?.name_ru}}
+        <img [src]="tour.country?.flag_url"/>
+      </div> -->
     </mat-card-content>
     <img mat-card-image src="/img/{{ tour?.img }}" alt="Photo of a tour" />
     <!-- <mat-card-actions>

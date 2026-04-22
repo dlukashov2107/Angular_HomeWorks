@@ -2,13 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToursService } from '../../services/tours.service';
 import { MatCardModule } from '@angular/material/card';
-import { ITour } from '../../models/interfaces';
+import { ITour, ITourResponse } from '../../models/interfaces';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tour-item',
-  imports: [MatCardModule],
+  imports: [MatCardModule, CommonModule],
   templateUrl: './tour-item.component.html',
   styleUrl: './tour-item.component.scss',
 })
@@ -22,9 +23,9 @@ export class TourItemComponent implements OnInit {
   ngOnInit(): void {
     const heroId = this.route.snapshot.paramMap.get('id');
     this.tourService.getTourById(heroId).subscribe(
-      (data) => {
-        //console.log('tour, id', data, heroId);
-        this.tour = data;
+      (data: ITourResponse) => {
+        console.log('tour, id', data, heroId);
+        this.tour = data.tour;
         console.log('Tour: ', this.tour);
       },
       (error) => {

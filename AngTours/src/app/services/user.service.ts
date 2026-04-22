@@ -7,6 +7,7 @@ import { ITour } from '../models/interfaces';
 export class UserService {
   user: string;
   tour: ITour;
+  toursInBasket: number = 0;
 
   constructor() {}
 
@@ -22,10 +23,18 @@ export class UserService {
     this.user = user;
   }
 
+  getTour(): ITour {
+    return this.tour;
+  }
   setTour(tour: ITour): void {
     this.tour = tour;
   }
-  getTour(): ITour {
-    return this.tour;
+
+  getToursCountInBasket(): number {
+    return this.toursInBasket;
+  }
+  setToursCountInBasket(toursCount: number): void {
+    console.log('setBasket', toursCount);
+    this.toursInBasket = toursCount;
   }
 }

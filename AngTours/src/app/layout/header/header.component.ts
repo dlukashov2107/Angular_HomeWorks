@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   private router = inject(Router);
   private ngZone = inject(NgZone);
-  private cdr=inject(ChangeDetectorRef);
+  private cdr = inject(ChangeDetectorRef);
   public userService = inject(UserService);
   menuItems = [
     {
@@ -32,10 +32,12 @@ export class HeaderComponent {
 
   date = new Date();
   ngOnInit(): void {
-    this.ngZone.runOutsideAngular(()=> {return setInterval(() => {
-      this.date = new Date();
-      this.cdr.detectChanges();
-    }, 1000)});
+    this.ngZone.runOutsideAngular(() => {
+      return setInterval(() => {
+        this.date = new Date();
+        this.cdr.detectChanges();
+      }, 1000);
+    });
   }
   //constructor(public userService: UserService) {}
   constructor() {}

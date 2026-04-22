@@ -20,18 +20,56 @@ export interface ITour {
   price: string;
   img: string;
   type?: string;
-  locationId: number;
   date?: string;
+  locationId: number;
+  country?: ICountriesResponseItem;
+  code?: string;
+  inBasket?: boolean;
 }
 
 export interface IToursResponse {
-  tours: Array<ITour>;
+  //tours: Array<ITour>;
+  tours: Omit<ITour, 'country' | 'inBasket'>[];
 }
-export interface ITourResponse extends ITour {}
+export interface ITourResponse {
+  tour: Omit<ITour, 'country' | 'inBasket'>;
+}
 
 export interface IFilterTypeLogic {
-  key: ITourTypes,
-  label?: string
+  key: ITourTypes;
+  label?: string;
+}
+
+// export interface ITourServerRes{
+//   tours: Omit<ITour, 'country' | 'inBasket'>[];
+// }
+
+export interface ICountriesResponseItem {
+  iso_code2: string;
+  iso_code3: string;
+  name_ru: string;
+  flag_url: string;
 }
 
 export type ITourTypes = 'all' | 'single' | 'group';
+
+export interface ILocation {
+  lat: number;
+  lng: number;
+}
+
+export type Coords = {
+  latlng: [number, number];
+};
+
+export interface IWeatherData {
+  isDay: number;
+  snowfall: number;
+  rain: number;
+  currentWeather: number;
+}
+
+export interface ICountryWeather {
+  countrieData: Coords;
+  weatherData: IWeatherData;
+}

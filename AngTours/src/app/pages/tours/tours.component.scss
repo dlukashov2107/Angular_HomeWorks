@@ -1,7 +1,7 @@
 .tours-wrap {
   overflow-y: auto;
   width: 100%;
-  // @media screen {    
+  // @media screen {
   // };
   height: 600px;
 
@@ -16,6 +16,16 @@
     &.active {
       border: 3px solid red;
     }
+
+    & .country-info {
+      img {
+        width: 20px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   .tour-header-image {
@@ -24,10 +34,21 @@
     }
   }
 }
-.input-search-wrap{
-display: flex;
-justify-content: center;
-  & .input-search-form{
+.input-search-wrap {
+  display: flex;
+  justify-content: center;
+  & .input-search-form {
     width: 50%;
+  }
+}
+
+.img-basket {
+  position: relative;
+  left: 10px;
+  margin: 10px;
+  width: 30px;
+  height: 30px;
+  &:hover {
+    cursor: pointer;
   }
 }

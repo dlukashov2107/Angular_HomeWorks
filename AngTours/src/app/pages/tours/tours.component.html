@@ -36,11 +36,26 @@
               <p>
                 {{ item.description }}
               </p>
+              <p>{{ item.date | date: "dd-MM-YY" }}</p>
+              <div
+                (click)="showMap($event, item, item.country?.iso_code2)"
+                class="country-info"
+              >
+                Страна: {{ item.country?.name_ru }}
+                <img [src]="item.country?.flag_url" />
+              </div>
             </mat-card-content>
             <mat-card-actions>
               <button (click)="goToTour(item)" matButton>Подробнее...</button>
             </mat-card-actions>
           </mat-card>
+          <div (click)="changeBasketStatus(item)" class="img-basket">
+            @if (toursInBasket.includes(item.id)) {
+              <img src="/img/basket_minus.png" alt="Photo of a basket" />
+            } @else {
+              <img src="/img/basket_plus.png" alt="Photo of a basket" />
+            }
+          </div>
         </div>
       }
     } @else {
@@ -48,3 +63,23 @@
     }
   </ngx-masonry>
 </div>
+
+<nz-modal
+  nzDraggable
+  nzCentered
+  (nzOnCancel)="showModal = false"
+  (nzOnOk)="showModal = false"
+  [(nzVisible)]="showModal"
+  [nzTitle]="mapCountryName"
+>
+  <ng-container *nzModalContent>
+    @if (weatherData) {
+      <p>Погода: {{ weatherData.currentWeather }}</p>
+      <p *ngIf="weatherData.rain > 0">Идёт дождь: {{ weatherData.rain }}</p>
+      <p *ngIf="weatherData.snowfall > 0">
+        Идёт снег: {{ weatherData.snowfall }}
+      </p>
+    }
+    <app-map></app-map>
+  </ng-container>
+</nz-modal>

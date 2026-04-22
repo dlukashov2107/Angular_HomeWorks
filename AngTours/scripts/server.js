@@ -7,6 +7,7 @@ const { log } = require("console");
 //const userJson = "./src/app/shared/mocks/users.json";
 const userJson = "./server-data/users.json";
 const toursJson = "./server-data/tours.json";
+const countriesJson = "./server-data/countries.json";
 const jsonFileData = fs.readFileSync(userJson, "utf-8");
 let parseJsonData = JSON.parse(jsonFileData);
 
@@ -151,9 +152,9 @@ app.get("/tour/:id", (req, res) => {
   const paramId = req.params.id;
   const item = parseJsonData.tours.find((tour) => tour.id === paramId);
   if (item) {
-    //let obj = { tour: item };
-    //res.send(obj);
-    res.send(item);
+    let obj = { tour: item };
+    res.send(obj);
+    // res.send(item);
     //res.send(JSON.stringify(item));
   } else {
     throw new Error("Тур не найден по id:", paramId);
@@ -180,6 +181,23 @@ app.get("/nearestTours", (req, res) => {
     (tour) => tour.locationId === locationId,
   );
   res.send(items);
+});
+
+/*******************get countries */
+app.get("/countries", (req, res) => {
+  const jsonFileData = fs.readFileSync(
+    countriesJson,
+    "utf-8",
+    (err, data) => {},
+    (err) => {
+      console.log("err read file tours", err);
+    },
+  );
+
+  // parse data
+  const parseJsonData = JSON.parse(jsonFileData);
+
+  res.send(parseJsonData);
 });
 
 // run and listen serve

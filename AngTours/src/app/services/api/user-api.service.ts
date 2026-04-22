@@ -14,12 +14,11 @@ import { LoaderService } from './loader-api.service';
   providedIn: 'root', //Здесь мы указываем, что UserApiService - это singletone
 })
 export class UserApiService {
-  private api = API;
+  private api = inject(API);
   private http = inject(HttpClient);
   private loaderServise = inject(LoaderService);
 
   constructor() {}
-
 
   auth(body: IAuthorizationUser): Observable<IAuthUserResponse> {
     this.loaderServise.setLoader(true);
