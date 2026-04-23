@@ -49,11 +49,35 @@
               <button (click)="goToTour(item)" matButton>Подробнее...</button>
             </mat-card-actions>
           </mat-card>
-          <div (click)="changeBasketStatus(item)" class="img-basket">
-            @if (toursInBasket.includes(item.id)) {
-              <img src="/img/basket_minus.png" alt="Photo of a basket" />
+          <!-- <div (click)="changeBasketStatus(item)" class="img-basket">
+            @if(toursInBasket.includes(item.id))
+            {
+              <img
+               src="/img/basket_minus.png"
+               alt="Photo of a basket"
+             />
+            }
+            @else
+            {
+              <img
+               src="/img/basket_plus.png"
+               alt="Photo of a basket"
+             />
+            }
+         </div> -->
+          <div class="basket my-2 ml-2">
+            @if (!item.inBasket) {
+              <i
+                (click)="setItemToBasket($event, item)"
+                class="pi pi-cart-plus"
+                style="color: green"
+              ></i>
             } @else {
-              <img src="/img/basket_plus.png" alt="Photo of a basket" />
+              <i
+                (click)="removeItemFromBasket($event, item)"
+                class="pi pi-cart-minus"
+                style="color: red"
+              ></i>
             }
           </div>
         </div>

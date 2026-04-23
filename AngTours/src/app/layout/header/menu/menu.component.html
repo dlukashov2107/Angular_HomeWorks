@@ -1,6 +1,8 @@
 <div class="menu">
-    {{label}}
-    @for (item of items; track $index) {
-        <a class="menu-reference" routerLink="/{{item.route}}">{{item.title}}</a>
-    }
+  {{ label }}
+  @for (item of items; track $index) {
+    <a class="menu-reference" routerLink="/{{ item.route }}">{{
+      item.title
+    }}</a>
+  }
 </div>

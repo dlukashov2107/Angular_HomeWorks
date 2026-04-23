@@ -5,13 +5,13 @@ import { RouterLink } from '@angular/router';
   selector: 'app-menu',
   imports: [RouterLink],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss'
+  styleUrl: './menu.component.scss',
 })
 export class MenuComponent implements OnChanges {
-  @Input() items: any[]=[];
+  @Input() items: any[] = [];
   @Input() label: string;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("changes", changes)
+    console.log('changes', changes);
   }
 }

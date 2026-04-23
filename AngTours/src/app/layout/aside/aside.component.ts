@@ -35,14 +35,12 @@ export class AsideComponent {
   }
   changeTourDate(ev: any): void {
     // console.log("full date: ", ev);
-    let baseDate = ev.value.toLocaleDateString();
-    let finDate =
-      baseDate.slice(3, 5) +
-      '-' +
-      baseDate.slice(0, 2) +
-      '-' +
-      baseDate.slice(6, 10);
-    this.tourService.setTourDate(finDate);
-    console.log('ffinDate: ', finDate);
+    //  let baseDate = ev.value.toLocaleDateString();
+
+    //  let finDate =baseDate.slice(3,5) + "-" + baseDate.slice(0,2) + "-" + baseDate.slice(6,10);
+    //  this.tourService.setTourDate(finDate);
+    this.tourService.setTourDate(ev.value.toISOString());
+    //console.log("date: ", ev.value.toISOString())
+    //  console.log("ffinDate: ", finDate);
   }
 }

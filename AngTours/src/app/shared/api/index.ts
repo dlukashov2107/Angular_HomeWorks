@@ -9,6 +9,7 @@ export const apiData = {
   countries: `${environment.server}/countries`,
   getWeather: 'https://api.open-meteo.com/v1/forecast',
   countryByCode: 'https://restcountries.com/v3.1/alpha',
+  order: `${environment.server}/order`,
 } as const;
 
 export const API = new InjectionToken('app.config', {

@@ -17,8 +17,10 @@
       </div> -->
     </mat-card-content>
     <img mat-card-image src="/img/{{ tour?.img }}" alt="Photo of a tour" />
-    <!-- <mat-card-actions>
-      <button matButton>Подробнее...</button>
-    </mat-card-actions> -->
+    @if (tour) {
+      <mat-card-actions>
+        <button matButton (click)="onOrder($event)">Оформить заказ</button>
+      </mat-card-actions>
+    }
   </mat-card>
 </div>

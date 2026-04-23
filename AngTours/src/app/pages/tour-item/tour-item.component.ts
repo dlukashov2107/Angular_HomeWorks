@@ -2,9 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToursService } from '../../services/tours.service';
 import { MatCardModule } from '@angular/material/card';
-import { ITour, ITourResponse } from '../../models/interfaces';
+import { ITour } from '../../models/interfaces';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,29 +13,20 @@ import { CommonModule } from '@angular/common';
   styleUrl: './tour-item.component.scss',
 })
 export class TourItemComponent implements OnInit {
+  tourId: string = null;
+  tour: ITour;
+  private tourService = inject(ToursService);
   private readonly route = inject(ActivatedRoute);
   private router = inject(Router);
-  private tourService = inject(ToursService);
-  private userService = inject(UserService);
-  tour: ITour;
 
   ngOnInit(): void {
-    const heroId = this.route.snapshot.paramMap.get('id');
-    this.tourService.getTourById(heroId).subscribe(
-      (data: ITourResponse) => {
-        console.log('tour, id', data, heroId);
-        this.tour = data.tour;
-        console.log('Tour: ', this.tour);
-      },
-      (error) => {
-        console.log('error', error);
-      },
-    );
+    this.tourId = this.route.snapshot.paramMap.get('id');
+    this.tourService.getTourById(this.tourId).subscribe((tour) => {
+      this.tour = tour.tour;
+    });
   }
-  onOrder(): void {
-    if (this.tour.id) {
-      this.userService.setTour(this.tour);
-      this.router.navigate(['/order']);
-    }
+
+  onOrder(ev: Event): void {
+    this.router.navigate(['/tours/order/', this.tourId]);
   }
 }

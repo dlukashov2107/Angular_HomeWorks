@@ -38,7 +38,7 @@ import {
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { MapComponent } from '../../shared/components/map/map.component';
 import { ru_RU, NzI18nService } from 'ng-zorro-antd/i18n';
-import { UserService } from '../../services/user.service';
+import { BasketService } from '../../services/basket.service';
 
 @Component({
   selector: 'app-tours',
@@ -67,7 +67,7 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   private i18n = inject(NzI18nService);
-  private userService = inject(UserService);
+  private basketService = inject(BasketService);
 
   switchLanguage() {
     this.i18n.setLocale(ru_RU);
@@ -112,6 +112,7 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.dateUnsubscriber = this.tourService.tourDate$.subscribe(
       (date: string) => {
+        console.log('change_date', date);
         this.dateTourFilter = date;
         this.initTourFilterLogic();
       },
@@ -135,20 +136,32 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToTour(tour: ITour): void {
     if (tour?.id) {
-      this.router.navigate([`tour/${tour.id}`]);
+      this.router.navigate([`tours/tour/${tour.id}`]);
     } else {
       console.error('id не найден');
     }
   }
 
   changeBasketStatus(tour: ITour): void {
+    console.log('toursInBasket: ', this.toursInBasket);
     if (this.toursInBasket.length > 0) {
       let index = this.toursInBasket.indexOf(tour.id);
-      if (index !== -1) this.toursInBasket.splice(index);
+      console.log('found index', index);
+      if (index !== -1) this.toursInBasket.splice(index, 1);
       else this.toursInBasket.push(tour.id);
     } else this.toursInBasket.push(tour.id);
 
-    this.userService.setToursCountInBasket(this.toursInBasket.length);
+    this.basketService.setToursCountInBasket(this.toursInBasket.length);
+  }
+
+  setItemToBasket(ev: Event, tour: ITour): void {
+    ev.stopPropagation();
+    this.basketService.setItemToBasket(tour);
+  }
+
+  removeItemFromBasket(ev: Event, tour: ITour): void {
+    ev.stopPropagation();
+    this.basketService.removeItemFormBasket(tour);
   }
 
   sort(item1: HTMLElement, item2: HTMLElement): number {
@@ -177,20 +190,6 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const searchValue = (ev.target as HTMLInputElement).value;
     this.inputSearchTourFilter = searchValue;
-    // const regExp = new RegExp(searchValue, 'i');
-
-    // if (!searchValue) {
-    //   this.tours = [...this.toursCopy];
-    // } else {
-    //   this.tours = this.toursCopy.filter((el) => {
-    //     return regExp.test(el.name);
-    //   });
-    // }
-    // setTimeout(() => {
-    //   //this.showMasonry = true;
-    //   this.masonry.reloadItems();
-    //   this.masonry.layout();
-    // });
     this.initTourFilterLogic();
   }
 
@@ -218,11 +217,24 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     //logic for Date
+    console.log('this.dateTourFilter', this.dateTourFilter);
     if (this.dateTourFilter) {
-      console.log('this.dateTourFilter', this.dateTourFilter);
+      let dateFromDatePicker = new Date(this.dateTourFilter).setHours(0, 0, 0);
+      //dateFromDatePicker.setHours(0,0,0);
+      console.log('dateFromDatePicker', dateFromDatePicker);
       filteredArr = filteredArr.filter((el) => {
-        el.date === this.dateTourFilter;
-        console.log(el.date);
+        // if(el.date)
+        // {
+        //console.log(el.date);
+        let dateCurTour = new Date(el.date).setHours(0, 0, 0);
+        //dateCurTour.setHours(0,0,0);
+        //console.log("el.date", el.date)
+        console.log('tourDate', dateCurTour);
+        return dateCurTour == dateFromDatePicker;
+        // return true;
+        // }
+        // else
+        //   return false;
       });
     }
 
@@ -247,15 +259,18 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
   showMap(ev: Event, tour: ITour, code: string): void {
     this.mapCountryName = tour.country?.name_ru;
     this.showModal = true;
-    // ev.stopPropagation();
-    // this.tourService.getCountryByCode(code).subscribe((data)=>{
-    //   if(data){
-    //     const countrieInfo = data.countrieData;
-    //     console.log('countryInfo', countrieInfo);
-    //     this.location = {lat: countrieInfo.latlng[0], lng: countrieInfo.latlng[1]};
-    //     this.weatherData = data.weatherData;
-    //     this.showModal = true;
-    //   }
-    // });
+    ev.stopPropagation();
+    this.tourService.getCountryByCode(code).subscribe((data) => {
+      if (data) {
+        const countrieInfo = data.countrieData;
+        console.log('countryInfo', countrieInfo);
+        this.location = {
+          lat: countrieInfo.latlng[0],
+          lng: countrieInfo.latlng[1],
+        };
+        this.weatherData = data.weatherData;
+        this.showModal = true;
+      }
+    });
   }
 }

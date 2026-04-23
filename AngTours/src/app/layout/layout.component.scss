@@ -1,0 +1,19 @@
+.layout-main-content {
+  display: flex;
+  justify-content: space-between;
+}
+.main-content-center {
+  display: inline-block;
+  flex-direction: row;
+  width: 100%;
+  height: 80%;
+  margin-right: 10px;
+}
+
+.layout-header {
+  height: 20%;
+}
+
+.layout-footer {
+  height: 20%;
+}

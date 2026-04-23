@@ -1,12 +1,16 @@
 import { ChangeDetectorRef, Component, NgZone, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
 import { Router } from '@angular/router';
+import { BasketService } from '../../services/basket.service';
+import { Subscription, Observable } from 'rxjs';
+import { ITour } from '../../models/interfaces';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-header',
-  imports: [DatePipe, MenuComponent],
+  imports: [DatePipe, MenuComponent, AsyncPipe, OverlayBadgeModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -15,6 +19,13 @@ export class HeaderComponent {
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   public userService = inject(UserService);
+  private basketService = inject(BasketService);
+  basketUnsubscriber: Subscription;
+
+  toursInBasket: number = 0;
+
+  basketStore$: Observable<ITour[]> = null;
+
   menuItems = [
     {
       route: 'auth',
@@ -38,7 +49,19 @@ export class HeaderComponent {
         this.cdr.detectChanges();
       }, 1000);
     });
+
+    this.basketUnsubscriber = this.basketService.toursInBasket$.subscribe(
+      (toursCount) => {
+        this.toursInBasket = toursCount;
+      },
+    );
+    this.basketStore$ = this.basketService.basketStore$;
   }
+
+  ngOnDestroy(): void {
+    if (this.basketUnsubscriber) this.basketUnsubscriber.unsubscribe();
+  }
+
   //constructor(public userService: UserService) {}
   constructor() {}
 

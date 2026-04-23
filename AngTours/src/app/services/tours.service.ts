@@ -16,6 +16,7 @@ import {
   ITour,
   ITourTypes,
   ICountriesResponseItem,
+  IPostOrderResponse,
 } from '../models/interfaces';
 
 @Injectable({
@@ -29,8 +30,6 @@ export class ToursService {
   readonly tourDate$ = this.tourDateSubject.asObservable();
   constructor() {}
 
-  //getTours(): Observable<IToursResponse> {
-  //return this.toursApi.getTours(); }
   getTours(): Observable<ITour[]> {
     const tours$ = this.toursApi.getTours();
     const countries$ = this.toursApi.getCountries();
@@ -79,8 +78,10 @@ export class ToursService {
   setTourDate(date: string): void {
     this.tourDateSubject.next(date);
   }
-
   getCountryByCode(code: string) {
     return this.toursApi.getCountryByCode(code);
+  }
+  postOrder(orderBody: any): Observable<IPostOrderResponse> {
+    return this.toursApi.postOrder(orderBody);
   }
 }

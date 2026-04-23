@@ -58,11 +58,11 @@ export class HighlightActiveDirective
     if (this.initFirst && this.items?.length) {
       this.changeIndex(0);
     }
-   // console.log('items', this.items);
+    // console.log('items', this.items);
   }
 
   changeIndex(shift: -1 | 1 | 0) {
-   // console.log('changeIndex, params', shift);
+    // console.log('changeIndex, params', shift);
     const items = this.items;
     if (!items.length) {
       return;
@@ -92,7 +92,7 @@ export class HighlightActiveDirective
   }
 
   initKeyUp(event: KeyboardEvent) {
-   // console.log('event', event);
+    // console.log('event', event);
     if (event.key === 'ArrowRight') {
       this.changeIndex(1);
     } else if (event.key === 'ArrowLeft') {

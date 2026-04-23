@@ -1,9 +1,10 @@
 .tours-wrap {
   overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   // @media screen {
   // };
-  height: 600px;
+  height: 900px;
 
   & .tour-item {
     width: 300px;
@@ -26,6 +27,13 @@
         cursor: pointer;
       }
     }
+    & .basket {
+      width: 20px;
+      height: 20px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   .tour-header-image {
@@ -35,10 +43,10 @@
   }
 }
 .input-search-wrap {
-  display: flex;
+  display: inline;
   justify-content: center;
   & .input-search-form {
-    width: 50%;
+    width: 100%;
   }
 }
 

@@ -10,6 +10,11 @@ export interface IAuthorizationUser {
 export interface IRegUserResponse {
   status: string;
 }
+
+export interface IPostOrderResponse {
+  status: string;
+}
+
 export interface IAuthUserResponse extends IRegUserResponse {}
 
 export interface ITour {

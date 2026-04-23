@@ -7,6 +7,7 @@ import {
   ICountriesResponseItem,
   ICountryWeather,
   Coords,
+  IPostOrderResponse,
 } from '../../models/interfaces';
 import {
   catchError,
@@ -87,5 +88,9 @@ export class TourApiService {
           );
         }),
       );
+  }
+
+  postOrder(orderBody: any): Observable<IPostOrderResponse> {
+    return this.http.post<any>(this.api.order, orderBody);
   }
 }
