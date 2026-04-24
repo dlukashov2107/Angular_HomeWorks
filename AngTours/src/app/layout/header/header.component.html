@@ -1,23 +1,22 @@
 <div class="layout-header">
   <app-menu [items]="menuItems"></app-menu>
   <div>
-    <!-- <div class="basket mr-4">
+    <div class="basket mr-4">
       <p-overlaybadge
-      badgeSize="small"
-      [value]="(basketStore& | async).length"
-      severity="danger">
-
-      <div class="basket-icon-wrap">
+        badgeSize="small"
+        [value]="(basketStore$ | async).length"
+        severity="info"
+      >
+        <div class="basket-icon-wrap">
           <i class="pi pi-cart-arrow-down"></i>
-      </div>
-      
+        </div>
       </p-overlaybadge>
-    </div> -->
+    </div>
 
-    <div class="img-basket">
+    <!-- <div class="img-basket">
       <img src="/img/basket.png" alt="Photo of a basket" />
       <p class="toursInBasketCounter">{{ toursInBasket }}</p>
-    </div>
+    </div> -->
     @if (userService.getUser()) {
       <div class="user-info-wrap">Ваш логин: {{ userService.getUser() }}</div>
     } @else {

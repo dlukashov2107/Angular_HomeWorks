@@ -27,11 +27,11 @@
   justify-content: space-between;
   gap: 15px;
 }
-.toursInBasketCounter {
-  position: relative;
-  left: -15px;
-  top: 35px;
-}
+// .toursInBasketCounter {
+//   position: relative;
+//   left: -15px;
+//   top: 35px;
+// }
 
 .basket {
   display: flex;
@@ -39,6 +39,6 @@
   & .basket-icon-wrap {
     position: relative;
     top: 10px;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
   }
 }

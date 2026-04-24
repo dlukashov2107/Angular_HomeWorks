@@ -10,7 +10,7 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-header',
-  imports: [DatePipe, MenuComponent, AsyncPipe, OverlayBadgeModule],
+  imports: [DatePipe, MenuComponent, OverlayBadgeModule, AsyncPipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -19,7 +19,7 @@ export class HeaderComponent {
   private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
   public userService = inject(UserService);
-  private basketService = inject(BasketService);
+  // private basketService = inject(BasketService);
   basketUnsubscriber: Subscription;
 
   toursInBasket: number = 0;
@@ -43,6 +43,7 @@ export class HeaderComponent {
 
   date = new Date();
   ngOnInit(): void {
+    this.basketStore$ = this.basketService.basketStore$;
     this.ngZone.runOutsideAngular(() => {
       return setInterval(() => {
         this.date = new Date();
@@ -55,7 +56,6 @@ export class HeaderComponent {
         this.toursInBasket = toursCount;
       },
     );
-    this.basketStore$ = this.basketService.basketStore$;
   }
 
   ngOnDestroy(): void {
@@ -63,7 +63,7 @@ export class HeaderComponent {
   }
 
   //constructor(public userService: UserService) {}
-  constructor() {}
+  constructor(private basketService: BasketService) {}
 
   onExit(ev: Event): void {
     this.userService.setUser('');
