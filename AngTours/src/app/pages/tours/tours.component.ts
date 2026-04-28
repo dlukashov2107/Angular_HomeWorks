@@ -219,22 +219,18 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy {
     //logic for Date
     console.log('this.dateTourFilter', this.dateTourFilter);
     if (this.dateTourFilter) {
-      let dateFromDatePicker = new Date(this.dateTourFilter).setHours(0, 0, 0);
-      //dateFromDatePicker.setHours(0,0,0);
-      console.log('dateFromDatePicker', dateFromDatePicker);
+      let dateFromDatePicker = new Date(this.dateTourFilter);
+      console.log('datePicker ', dateFromDatePicker);
+      dateFromDatePicker.setHours(0, 0, 0, 0);
+      console.log('datePicker after Set', dateFromDatePicker);
+      console.log('datePicker getTime', dateFromDatePicker.getTime());
       filteredArr = filteredArr.filter((el) => {
-        // if(el.date)
-        // {
-        //console.log(el.date);
-        let dateCurTour = new Date(el.date).setHours(0, 0, 0);
-        //dateCurTour.setHours(0,0,0);
-        //console.log("el.date", el.date)
-        console.log('tourDate', dateCurTour);
-        return dateCurTour == dateFromDatePicker;
-        // return true;
-        // }
-        // else
-        //   return false;
+        console.log('el.date', el.date);
+        let dateCurTour = new Date(el.date);
+        dateCurTour.setHours(0, 0, 0, 0);
+        console.log('tourDate after Set', dateCurTour);
+        console.log('tourDate getTime()', dateCurTour.getTime());
+        return dateCurTour.getTime() == dateFromDatePicker.getTime();
       });
     }
 

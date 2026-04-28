@@ -6,14 +6,24 @@ import { UserService } from '../../services/user.service';
 import {
   FormControl,
   FormGroup,
-  MinLengthValidator,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-order',
-  imports: [RouterLink],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    InputNumberModule,
+    ButtonModule,
+    InputTextModule,
+    DatePickerModule,
+  ],
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss',
 })
@@ -24,10 +34,9 @@ export class OrderComponent implements OnInit {
   private tourService = inject(ToursService);
   private userService = inject(UserService);
   private readonly route = inject(ActivatedRoute);
-  //private router = inject(Router);
 
   ngOnInit(): void {
-    console.log('initOrder', this.route.snapshot.paramMap.get('id'));
+    // console.log('initOrder', this.route.snapshot.paramMap.get('id'));
     this.tourId = this.route.snapshot.paramMap.get('id');
     this.tourService.getTourById(this.tourId).subscribe((tour) => {
       this.tour = tour.tour;
@@ -57,26 +66,3 @@ export class OrderComponent implements OnInit {
     this.tourService.postOrder(postObj).subscribe();
   }
 }
-
-// import { Component, inject } from '@angular/core';
-// import { MatCardModule } from '@angular/material/card';
-// import { UserService } from '../../services/user.service';
-// import { ITour } from '../../models/interfaces';
-// import { NgClass } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-order',
-//   imports: [MatCardModule, NgClass, FormsModule],
-//   templateUrl: './order.component.html',
-//   styleUrl: './order.component.scss',
-// })
-// export class OrderComponent {
-//   private userService = inject(UserService);
-//   tour: ITour = this.userService.getTour();
-//   name: string = '';
-//   surName: string = '';
-//   email: string = '';
-
-//   onInitOrder() {}
-// }

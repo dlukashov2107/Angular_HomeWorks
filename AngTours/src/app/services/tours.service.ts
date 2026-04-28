@@ -9,6 +9,7 @@ import {
   of,
   map,
   finalize,
+  withLatestFrom,
 } from 'rxjs';
 import {
   IToursResponse,
@@ -18,6 +19,7 @@ import {
   ICountriesResponseItem,
   IPostOrderResponse,
 } from '../models/interfaces';
+import { BasketService } from './basket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +28,8 @@ export class ToursService {
   private toursApi = inject(TourApiService);
   private tourTypeSubject = new Subject<ITourTypes>();
   private tourDateSubject = new Subject<string>();
+  private basketService = inject(BasketService)
+
   readonly tourType$ = this.tourTypeSubject.asObservable();
   readonly tourDate$ = this.tourDateSubject.asObservable();
   constructor() {}
@@ -33,14 +37,14 @@ export class ToursService {
   getTours(): Observable<ITour[]> {
     const tours$ = this.toursApi.getTours();
     const countries$ = this.toursApi.getCountries();
-
+    
     return forkJoin<[ICountriesResponseItem[], IToursResponse]>([
       countries$,
       tours$,
     ]).pipe(
       delay(1000),
-
-      map((data) => {
+      withLatestFrom(this.basketService.basketStore$),
+      map(([data, basketData]) => {
         console.log('data', data);
         let toursWithCountries = [] as ITour[];
 
@@ -53,6 +57,7 @@ export class ToursService {
 
         if (Array.isArray(toursArr)) {
           toursWithCountries = toursArr.map<ITour>((tour) => {
+            const isTourInBasket = basketData.find((basketTour) => basketTour.id === tour.id);
             return {
               ...tour,
               country: countriesMap.get(tour.code) || null,

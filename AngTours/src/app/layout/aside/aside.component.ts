@@ -5,7 +5,10 @@ import { ToursService } from '../../services/tours.service';
 import { IFilterTypeLogic, ITourTypes } from '../../models/interfaces';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 
 @Component({
   selector: 'app-aside',
@@ -16,7 +19,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatInputModule,
   ],
   templateUrl: './aside.component.html',
-  providers: [provideNativeDateAdapter()],
+  providers: [
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+  ],
   styleUrl: './aside.component.scss',
 })
 export class AsideComponent {

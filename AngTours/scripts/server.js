@@ -7,6 +7,7 @@ const { log } = require("console");
 //const userJson = "./src/app/shared/mocks/users.json";
 const userJson = "./server-data/users.json";
 const toursJson = "./server-data/tours.json";
+const ordersJson = "./server-data/orders.json";
 const countriesJson = "./server-data/countries.json";
 const jsonFileData = fs.readFileSync(userJson, "utf-8");
 let parseJsonData = JSON.parse(jsonFileData);
@@ -163,32 +164,32 @@ app.get("/tour/:id", (req, res) => {
 
 /*******************post order */
 
-// app.post("/order", (req, res) => {
-//   const jsonFileData = fs.read(
-//     orderJson,
-//     "utf-8",
-//     (err, data) => {},
-//     (err) => {
-//       console.log("err read orderJson tours", err);
-//     },
-//   );
-//   //parse data
-//   const parseJsonData = JSON.parse(jsonFileData);
-//   const order = req.body;
-//   parseJsonData.orders.push(order);
+app.post("/order", (req, res) => {
+  const jsonFileData = fs.readFileSync(
+    ordersJson,
+    "utf-8",
+    (err, data) => {},
+    (err) => {
+      console.log("err read orderJson tours", err);
+    },
+  );
+  //parse data
+  const parseJsonData = JSON.parse(jsonFileData);
+  const order = req.body;
+  parseJsonData.orders.push(order);
 
-//   const json = JSON.stringify({ orders: parseJsonData.orders });
+  const json = JSON.stringify({ orders: parseJsonData.orders });
 
-//   fs.writeFileSync(
-//     orderJson,
-//     json,
-//     (data) => {},
-//     (err) => {
-//       console.log("err write file", err);
-//     },
-//   );
-//   res.send("ok");
-// });
+  fs.writeFileSync(
+    ordersJson,
+    json,
+    (data) => {},
+    (err) => {
+      console.log("err write file", err);
+    },
+  );
+  res.send("ok");
+});
 
 /*******************get nearest tour */
 app.get("/nearestTours", (req, res) => {

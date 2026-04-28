@@ -1,5 +1,5 @@
-.tours-wrapper {
-  width: 600px;
+.card-wrapper {
+  width: 1000px;
   margin-left: auto;
   margin-right: auto;
   & .tour-card {
@@ -12,7 +12,6 @@
       border: 1px solid red;
     }
   }
-
   .tour-header-image {
     & img {
       width: 100%;
